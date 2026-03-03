@@ -1,13 +1,12 @@
 import { Router } from "express";
 //importar funciones de controladores y middlewares necesarios
-
+import { getClientes,getClienteById, createCliente, updateCliente, deleteCliente } from "../controllers/clientes.controller";
 const router = Router({mergeParams: true}); //heredamos los params de la ruta padre
 
-router.get('/clientes', (req, res) => {
-    //aqui llamamos a la función del controlador para obtener los clientes
-    console.log("Obteniendo clientes...");  
-    // Aquí iría la lógica para obtener los clientes de la base de datos
-    res.json({ message: "Clientes obtenidos correctamente" });
-});
+router.get('/', getClientes);
+router.get('/:id', getClienteById);
+router.post('/', createCliente);
+router.put('/:id', updateCliente);
+router.delete('/:id', deleteCliente);
 
 export default router;
