@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "es2020", //version con la que voy a trabajar
+        "rootDir": "src", //carpeta raiz
+        "outDir": "dist", //carpeta de salida
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "esModuleInterop": true,
+        "resolveJsonModule": true, //resolver json como si fueran modulos. para importar archivos json
+        "strict": true
+    }
+}
