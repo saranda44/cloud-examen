@@ -1,11 +1,13 @@
 import { Router } from "express";
-//importar funciones de controladores y middlewares necesarios
-import { createNota, getNotaByFolio, descargarNota, enviarNota } from "../controllers/notas.controller";
-const router = Router({mergeParams: true}); //heredamos los params de la ruta padre
+import { createNota, getNotaById, descargarNota, enviarNota } from "../controllers/notas.controller";
+import { createNotaValidator } from "../middlewares/nota.validation";
+import { createDetalleNotaValidator } from "../middlewares/nota.detalle.validation";
+import { idParamValidator, validateRequest } from "../middlewares/validation";
+const router = Router({ mergeParams: true });
 
-router.post('/', createNota);
-router.get('/:folio', getNotaByFolio);
-router.get('/:folio/descargar', descargarNota);
-router.post('/:folio/enviar', enviarNota);
+router.post('/', createNotaValidator(), createDetalleNotaValidator(), validateRequest, createNota);
+router.get('/:id', idParamValidator(), validateRequest, getNotaById);
+router.get('/:id/descargar', idParamValidator(), validateRequest, descargarNota);
+router.post('/:id/enviar', idParamValidator(), validateRequest, enviarNota);
 
 export default router;

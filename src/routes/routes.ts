@@ -11,7 +11,7 @@ router.use(json());
 router.use('/clientes', clientesRoutes);
 router.use('/domicilios', domicilioRoutes);
 router.use('/productos', productosRoutes);
-router.use('notas', notasRoutes);
+router.use('/notas', notasRoutes);
 
 
 
