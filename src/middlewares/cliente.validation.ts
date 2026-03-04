@@ -30,10 +30,4 @@ export function updateClienteValidator() {
   ];
 }
 
-//validacion del parametro id para obtener, actualizar o eliminar un cliente
-export function idParamValidator() {
-  return [
-    param("id").isInt().withMessage("ID debe ser numérico"),
-  ];
-}
 

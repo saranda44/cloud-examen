@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { getClientes,getClienteById, createCliente, updateCliente, deleteCliente } from "../controllers/clientes.controller";
-import { createClienteValidator, updateClienteValidator, idParamValidator } from "../middlewares/cliente.validate";
-import { validateRequest } from "../middlewares/validation";
+import { createClienteValidator, updateClienteValidator } from "../middlewares/cliente.validation";
+import { validateRequest, idParamValidator } from "../middlewares/validation";
 
 const router = Router({mergeParams: true}); //heredamos los params de la ruta padre
 

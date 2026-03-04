@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { getDomicilios,getDomicilioById, getDomiciliosByCliente, updateDomicilio, createDomicilio, deleteDomicilio } from "../controllers/domicilio.controller";
+import { createDomicilioValidator, updateDomicilioValidator } from "../middlewares/domicilio.validation";
+import { validateRequest, idParamValidator } from "../middlewares/validation";
 const router = Router({mergeParams: true}); //heredamos los params de la ruta padre
 
 router.get('/', getDomicilios);
-router.get('/:id', getDomicilioById);
-router.get('/clientes/:clienteID', getDomiciliosByCliente);
-router.post('/', createDomicilio);
-router.put('/:id', updateDomicilio);
-router.delete('/:id', deleteDomicilio);
+router.get('/:id', idParamValidator(), validateRequest, getDomicilioById);
+router.get('/clientes/:id', idParamValidator(), validateRequest, getDomiciliosByCliente);
+router.post('/', createDomicilioValidator(), validateRequest, createDomicilio);
+router.put('/:id', idParamValidator(), updateDomicilioValidator(), validateRequest, updateDomicilio);
+router.delete('/:id', idParamValidator(), validateRequest, deleteDomicilio);
 
 export default router;
