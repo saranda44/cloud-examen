@@ -15,7 +15,6 @@ export async function createNota(req: Request, res: Response) {
         const nota = await NotaService.createNota(req.body, req.body.detalles);
         res.status(201).json(nota);
     } catch (error) {
-        console.log(error);
         res.status(500).json({ message: "Error al crear la nota" });
     }
 }

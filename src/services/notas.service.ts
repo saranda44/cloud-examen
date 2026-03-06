@@ -1,5 +1,6 @@
 import { NotaDetalleModel } from "../models/nota.detalle.model";
 import { NotaModel } from "../models/nota.model";
+import { ProductoModel } from "../models/producto.model";
 
 export const NotaService = {
     findById,
@@ -28,6 +29,13 @@ async function createNota(nota: any, detalles: any[]) {
     for (const detalle of detalles) {
         detalle.nota_id = notaId;
 
+        //obtener el precio unitario del producto
+        const producto = await ProductoModel.findById(detalle.producto_id);
+        if (!producto) {
+            throw new Error("Producto no encontrado");
+        }
+        detalle.precio_unitario = producto.precio_base;
+
         // CALCULAR IMPORTE: cantidad x precio_unitario
         detalle.importe = detalle.cantidad * detalle.precio_unitario;
 
@@ -40,7 +48,8 @@ async function createNota(nota: any, detalles: any[]) {
 
     // 3. ACTUALIZAR EL TOTAL en la nota maestra
     await NotaModel.updateTotal(notaId, totalNota);
-    createdNota.total = totalNota; // Opcional: para que se regrese en el JSON de respuesta
 
-    return createdNota;
+    // 4. Regresar la nota completa
+    const notaCompleta = await NotaModel.findById(notaId);
+    return notaCompleta;
 }

@@ -55,7 +55,6 @@ async function findById(id: number) {
         ON d.cliente_id = c.id
     WHERE c.id = $1
     GROUP BY c.id;`, [id]);
-    console.log(result.rows[0]);
     return result.rows[0] || null;
 }
 
