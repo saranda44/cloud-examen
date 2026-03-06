@@ -1,10 +1,13 @@
 import { NotaDetalleModel } from "../models/nota.detalle.model";
 import { NotaModel } from "../models/nota.model";
 import { ProductoModel } from "../models/producto.model";
+import { S3Client } from "@aws-sdk/client-s3";
 
 export const NotaService = {
     findById,
     createNota,
+    descargarPDF,
+    enviarCorreo
 };
 
 
@@ -15,17 +18,18 @@ async function findById(id: number) {
     return result;
 }
 
-// Función para crear una nota con sus detalles
+// Metodo para crear una nota con sus detalles
 //recibe un objeto nota con los datos principales y un arreglo de detalles con los productos y cantidades
 async function createNota(nota: any, detalles: any[]) {
-    // 1. Crear la nota maestra
+    // 1. Crear la nota base
+    //total = 0 hasta que se creen los detalles
     nota.folio = `FOLIO-${Date.now()}`;
     const createdNota = await NotaModel.create(nota);
     const notaId = createdNota.id;
 
     let totalNota = 0; // Variable para ir acumulando el total
 
-    // 2. Iterar sobre los detalles
+    // 2. Iterar sobre los detalles (producto_id y cantidad)
     for (const detalle of detalles) {
         detalle.nota_id = notaId;
 
@@ -46,10 +50,30 @@ async function createNota(nota: any, detalles: any[]) {
         await NotaDetalleModel.create(detalle);
     }
 
-    // 3. ACTUALIZAR EL TOTAL en la nota maestra
+    // 3. Actualizar el total en la nota base
     await NotaModel.updateTotal(notaId, totalNota);
 
     // 4. Regresar la nota completa
     const notaCompleta = await NotaModel.findById(notaId);
+
     return notaCompleta;
+}
+
+// Método para endpoint de descarga
+async function descargarPDF(id: number) {
+    //obtener la nota
+
+    //obtener el nombre del bucket (o obtenerlo del url) y el nombre del objeto (ponerlo en la url?)
+
+    //obtener los metadatos del objeto
+
+    //crear nuevos metadatos con nota-descargada: true
+
+    //descargar el pdf y regresarlo (presigned url?)
+
+}
+
+// Método para endpoint de re-enviar
+async function enviarCorreo(id: number) {
+    //al llamar este endpoint se debe invocar la lambda sendEmail
 }
