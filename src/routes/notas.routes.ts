@@ -5,9 +5,9 @@ import { createDetalleNotaValidator } from "../middlewares/nota.detalle.validati
 import { idParamValidator, validateRequest } from "../middlewares/validation";
 const router = Router({ mergeParams: true });
 
-router.post('/', createNotaValidator(), createDetalleNotaValidator(), validateRequest, createNota);
-router.get('/:id', idParamValidator(), validateRequest, getNotaById);
 router.get('/:rfc/:folio/descargar', descargarNota);
 router.post('/:rfc/:folio/enviar', enviarNota);
+router.get('/:id', idParamValidator(), validateRequest, getNotaById);
+router.post('/', createNotaValidator(), createDetalleNotaValidator(), validateRequest, createNota);
 
 export default router;
