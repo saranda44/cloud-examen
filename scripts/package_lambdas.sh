@@ -83,7 +83,7 @@ for func_file in "$SRC_DIR"/*.ts; do
     # 3. Zip recursivo de la función
     cd "$PACKAGE_DIR"
     # El archivo resultante quedará en lambda/build/nombreFuncion.zip
-    zip -r9 "../../$BUILD_ROOT/$FUNC_NAME.zip" . >/dev/null
+    zip -r9 "../$FUNC_NAME.zip" .
     cd - >/dev/null
 
     echo "$FUNC_NAME.zip listo en $BUILD_ROOT/"
