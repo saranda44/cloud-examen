@@ -3,8 +3,8 @@ import { SNSEvent } from 'aws-lambda';
 
 import PDFDocument from "pdfkit";
 
-const API_URL = "http://100.54.9.146:8080/api";
-const expediente = "647458";
+const API_URL = "http://34.239.150.101:8080/api";
+const expediente = "746458";
 
 // Cliente de S3 (toma las credenciales del entorno de ejecución Lambda o variables de entorno locales)
 const s3Client = new S3Client({});
@@ -29,12 +29,17 @@ export async function handler(event: SNSEvent) {
 
         // 2. Crear PDF
         //crear el buffer
+        //el buffer es un arreglo de bytes que se usa para almacenar datos en memoria 
+        // asi no tengo que guardar el pdf en ningun lado
         const doc = new PDFDocument();
         const buffers: Buffer[] = []
 
+        //cuando se genera un chunk de datos, se agrega al buffer
+        //el chunk es una parte del pdf que se genera cuando se crea el pdf y se va agregando al buffer
         doc.on('data', (chunk: Buffer) => buffers.push(chunk))
 
         const pdfBuffer: Buffer = await new Promise((resolve) => {
+            //cuando se termina de crear el pdf, se agrega el ultimo chunk al buffer y se resuelve la promesa
             doc.on('end', () => {
                 resolve(Buffer.concat(buffers))
             })
@@ -91,7 +96,7 @@ export async function handler(event: SNSEvent) {
                 'nota-descargada': 'false',
                 'veces-enviado': '1',
                 // Guardamos el ID de la base de datos para la URL de descarga
-                'nota-id': String(notaId || nota?.id || '')
+                'nota-id': String(notaId || nota.id)
             }
         });
 
