@@ -55,7 +55,7 @@ async function createNota(nota: any, detalles: any[]) {
 
     // 4. Enviar mensaje a SNS y suscribir al cliente al topico para enviar correo
     await noteCreated(notaId);
-    await subscribeClientEmail(nota.cliente.email);
+    await subscribeClientEmail(nota.cliente.correo);
 
     // 5. Regresar la nota completa
     const notaCompleta = await NotaModel.findById(notaId);
