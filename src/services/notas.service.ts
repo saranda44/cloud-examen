@@ -7,8 +7,7 @@ import { descargarPDF as descargaPDFS3 } from "./s3.service";
 export const NotaService = {
     findById,
     createNota,
-    descargarPDF,
-    enviarCorreo
+    descargarPDF
 };
 
 //funcion para leer una nota por su id regresa un json
@@ -71,9 +70,4 @@ async function createNota(nota: any, detalles: any[]) {
 async function descargarPDF(rfc: string, folio: string) {
     const pdfBuffer = await descargaPDFS3(rfc, folio);
     return pdfBuffer;
-}
-
-// Método para endpoint de re-enviar
-async function enviarCorreo(id: number) {
-    //al llamar este endpoint se debe invocar la lambda sendEmail
 }

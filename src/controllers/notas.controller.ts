@@ -34,12 +34,3 @@ export async function descargarNota(req: Request, res: Response) {
         res.status(500).json({ message: "Error al descargar la nota" });
     }
 }
-
-export async function enviarNota(req: Request, res: Response) {
-    try {
-        const nota = await NotaService.findById(Number(req.params.id));
-        res.json(nota);
-    } catch (error) {
-        res.status(500).json({ message: "Error al enviar la nota" });
-    }
-}
