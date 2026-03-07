@@ -23,7 +23,7 @@ export async function getDbPool() {
     // Obtener host de la base de datos
     const rdsHost = process.env.RDS_HOST || "";
 
-    const pool = new Pool({
+    pool = new Pool({
       host: rdsHost,
       user: username,
       password: password,
