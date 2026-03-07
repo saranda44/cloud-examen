@@ -29,11 +29,11 @@ export async function descargarPDF(rfc: string, folio: string) {
         const copyCommand = new CopyObjectCommand({
             Bucket: bucketName,
             Key: objectKey,
-            CopySource: `${bucketName}/${objectKey}`,
+            CopySource: `${bucketName}/${objectKey}`, // El origen es el mismo archivo
             MetadataDirective: "REPLACE",
             Metadata: {
-                ...response.Metadata, // Mantenemos los otros metadatos si existen
-                "nota-descargada": "true" // S3 guarda los valores de metadatos como strings
+                ...response.Metadata,
+                "nota-descargada": "true"
             }
         });
 

@@ -21,10 +21,16 @@ export async function createNota(req: Request, res: Response) {
 
 export async function descargarNota(req: Request, res: Response) {
     try {
-        const nota = await NotaService.descargarPDF(String(req.params.rfc), String(req.params.folio));
-        res.contentType("application/pdf");
-        res.send(nota);
+        const { rfc, folio } = req.params;
+        const pdfBuffer = await NotaService.descargarPDF(String(rfc), String(folio));
+
+        // decir al navegador que es un PDF y damos nombre del archivo
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=${folio}.pdf`);
+
+        res.send(pdfBuffer);
     } catch (error) {
+        console.error("Error en Controller:", error);
         res.status(500).json({ message: "Error al descargar la nota" });
     }
 }
