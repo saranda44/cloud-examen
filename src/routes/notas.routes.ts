@@ -7,7 +7,7 @@ const router = Router({ mergeParams: true });
 
 router.post('/', createNotaValidator(), createDetalleNotaValidator(), validateRequest, createNota);
 router.get('/:id', idParamValidator(), validateRequest, getNotaById);
-router.get('/:id/descargar', idParamValidator(), validateRequest, descargarNota);
-router.post('/:id/enviar', idParamValidator(), validateRequest, enviarNota);
+router.get('/:rfc/:folio/descargar', descargarNota);
+router.post('/:rfc/:folio/enviar', enviarNota);
 
 export default router;

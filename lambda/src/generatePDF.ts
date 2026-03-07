@@ -96,7 +96,10 @@ export async function handler(event: SNSEvent) {
                 'nota-descargada': 'false',
                 'veces-enviado': '1',
                 // Guardamos el ID de la base de datos para la URL de descarga
-                'nota-id': String(notaId || nota.id)
+                'nota-id': String(notaId || nota.id),
+                'rfc': cliente.rfc,
+                'folio': nota.folio,
+                'email': cliente.correo
             }
         });
 
@@ -119,5 +122,3 @@ export async function handler(event: SNSEvent) {
         };
     }
 };
-
-
