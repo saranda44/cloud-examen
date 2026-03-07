@@ -5,7 +5,7 @@ import { S3Event } from 'aws-lambda';
 const s3Client = new S3Client({});
 const snsClient = new SNSClient({});
 
-const API_URL = "http://34.239.150.101:8080/api";
+const API_URL = "http://98.93.37.76:8080/api";
 const SNS_TOPIC_ARN_EMAIL = 'arn:aws:sns:us-east-1:733249732922:sendEmail-examen1-nube';
 
 export async function handler(event: S3Event) {

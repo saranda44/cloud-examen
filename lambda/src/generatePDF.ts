@@ -3,7 +3,7 @@ import { SNSEvent } from 'aws-lambda';
 
 import PDFDocument from "pdfkit";
 
-const API_URL = "http://34.239.150.101:8080/api";
+const API_URL = "http://98.93.37.76:8080/api";
 const expediente = "746458";
 
 // Cliente de S3 (toma las credenciales del entorno de ejecución Lambda o variables de entorno locales)
