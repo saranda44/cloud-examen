@@ -1,5 +1,5 @@
 {
-  "name": "generatepdf",
+  "name": "lambda",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,12 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1002.0",
+    "@aws-sdk/client-s3": "^3.1003.0",
+    "@aws-sdk/client-sns": "^3.1003.0",
     "pdfkit": "^0.17.2"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.161",
     "@types/pdfkit": "^0.17.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
 }

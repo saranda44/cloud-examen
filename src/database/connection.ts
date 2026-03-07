@@ -1,22 +1,48 @@
-import { Pool, Client } from 'pg';
+import { Pool } from 'pg';
+import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 
-const pool = new Pool({
-  connectionString: process.env.DB_URL,
-});
+// Crear cliente a Secrets Manager
+const secretsClient = new SecretsManagerClient({ region: 'us-east-1' });
 
-//cuando use RDS
-// const client = new Client({
-//   host: process.env.RDS_HOST,
-//   user: process.env.RDS_USER,
-//   password: process.env.RDS_PASSWORD,
-//   database: process.env.RDS_DB_NAME,
-//   port: 5432,
-// });
+let pool: Pool | null = null;
 
-pool.query('SELECT NOW()').then((res) => {
-  console.log('Conexión exitosa a la base de datos');
-}).catch((err) => {
-  console.error('Error al conectar a la base de datos:', err);
-});
+export async function getDbPool() {
+  try {
+    // Obtener nombre de usuario de la base de datos
+    const userSecretResponse = await secretsClient.send(
+      new GetSecretValueCommand({ SecretId: 'examen1-nube-db-user' })
+    ); //obtenemos el secreto
+    const { username } = JSON.parse(userSecretResponse.SecretString || '{}'); //extraemos el nombre de usuario del secreto
 
-export default pool;
+    // Obtener contraseña de la base de datos
+    const passwordSecretResponse = await secretsClient.send(
+      new GetSecretValueCommand({ SecretId: 'examen1-nube-db-password' })
+    );
+    const { password } = JSON.parse(passwordSecretResponse.SecretString || '{}');
+
+    // Obtener host de la base de datos
+    const rdsHost = process.env.RDS_HOST || "";
+
+    const pool = new Pool({
+      host: rdsHost,
+      user: username,
+      password: password,
+      database: 'examen1_nube',
+      port: 5432,
+      max: 20, // número máximo de conexiones
+      idleTimeoutMillis: 30000, // tiempo de espera antes de cerrar la conexión
+      connectionTimeoutMillis: 2000, // tiempo de espera antes de intentar una nueva conexión
+      ssl: {
+        rejectUnauthorized: false // Desactiva la validación estricta del certificado
+      }
+    });
+
+    const res = await pool.query('SELECT NOW()');
+    console.log('Conexión exitosa a la base de datos RDS:', res.rows[0].now);
+
+    return pool;
+  } catch (error) {
+    console.error('Error al conectar a la base de datos RDS:', error);
+    throw error;
+  }
+};

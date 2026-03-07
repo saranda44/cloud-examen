@@ -14,7 +14,6 @@ app.use(express.json());
 // Rutas
 app.use("/api", routes)
 
-// Servidor
 app.listen(port, () => {
   console.log(`Servidor corriendo en puerto ${port}`)
 })

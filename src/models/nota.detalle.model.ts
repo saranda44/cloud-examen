@@ -1,4 +1,4 @@
-import pool from "../database/connection";
+import { getDbPool } from "../database/connection";
 
 export interface NotaDetalle {
   id?: number;
@@ -14,6 +14,7 @@ export const NotaDetalleModel = {
 };
 
 async function create(notaDetalle: NotaDetalle,) {
+  const pool = await getDbPool();
   await pool.query(
     `INSERT INTO nota_detalle
         (nota_id, producto_id, cantidad, precio_unitario, importe)

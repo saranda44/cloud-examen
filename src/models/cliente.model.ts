@@ -1,4 +1,4 @@
-import pool from "../database/connection";
+import { getDbPool } from "../database/connection";
 
 //interface para definir la estructura de un cliente
 export interface Cliente {
@@ -22,12 +22,14 @@ export const ClienteModel = {
 
 //query para obtener todos los clientes
 async function findAll() {
+    const pool = await getDbPool();
     const result = await pool.query("SELECT * FROM clientes");
     return result.rows;
 }
 
 //query para obtener un cliente por su id
 async function findById(id: number) {
+    const pool = await getDbPool();
     const result = await pool.query(`
         SELECT 
         c.id,
@@ -60,6 +62,7 @@ async function findById(id: number) {
 
 //query para insertar un nuevo cliente
 async function create(cliente: Cliente) {
+    const pool = await getDbPool();
     const result = await pool.query(
         "INSERT INTO clientes (razon_social, nombre_comercial, rfc, correo, telefono) VALUES ($1, $2, $3, $4, $5) RETURNING *",
         [cliente.razon_social, cliente.nombre_comercial, cliente.rfc, cliente.correo, cliente.telefono]
@@ -88,12 +91,14 @@ async function update(id: number, cliente: Cliente) {
     RETURNING *;
     `;
 
+    const pool = await getDbPool();
     const result = await pool.query(query, values);
     return result.rows[0];
 }
 
 //query para eliminar un cliente por su id
 async function remove(id: number) {
+    const pool = await getDbPool();
     const result = await pool.query("DELETE FROM clientes WHERE id = $1 RETURNING *", [id]);
     return result.rows[0] || null;
 }

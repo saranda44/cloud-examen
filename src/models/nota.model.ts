@@ -1,4 +1,4 @@
-import pool from "../database/connection";
+import { getDbPool } from "../database/connection";
 
 export interface Nota {
   id?: number;
@@ -16,6 +16,7 @@ export const NotaModel = {
 
 //query para obtener nota, detalle, cliente, domicilios y productos
 async function findById(id: number) {
+  const pool = await getDbPool();
   const result = await pool.query(
     `SELECT 
         n.id,
@@ -99,6 +100,7 @@ async function findById(id: number) {
 }
 
 async function create(nota: Nota) {
+  const pool = await getDbPool();
   const result = await pool.query(
     `INSERT INTO notas 
        (folio, cliente_id, direccion_facturacion_id, direccion_envio_id, total)
@@ -111,6 +113,7 @@ async function create(nota: Nota) {
 }
 
 async function updateTotal(notaId: number, total: number) {
+  const pool = await getDbPool();
   await pool.query(
     "UPDATE notas SET total = $1 WHERE id = $2",
     [total, notaId]
