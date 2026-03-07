@@ -32,7 +32,7 @@ export async function handler(event: SNSEvent) {
         const doc = new PDFDocument();
         const buffers: Buffer[] = []
 
-        doc.on('data', (chunk) => buffers.push(chunk))
+        doc.on('data', (chunk: Buffer) => buffers.push(chunk))
 
         const pdfBuffer: Buffer = await new Promise((resolve) => {
             doc.on('end', () => {
