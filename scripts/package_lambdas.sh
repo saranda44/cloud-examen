@@ -22,12 +22,12 @@ echo "Compilando TypeScript de las lambdas..."
 # Asumimos que tsc está instalado en devDependencies y config compila a dist/
 npx tsc --project $LAMBDA_DIR/tsconfig.json || npx tsc
 
-echo "Verificando dependencias en la raíz..."
-# Generar hash basado en package.json y package-lock.json de la raíz
-if [ -f "package-lock.json" ]; then
-  NEW_HASH=$(sha256sum package.json package-lock.json | sha256sum | awk '{print $1}')
+echo "Verificando dependencias en la carpeta lambdas..."
+# Generar hash basado en package.json y package-lock.json de la carpeta lambdas
+if [ -f "$LAMBDA_DIR/package-lock.json" ]; then
+  NEW_HASH=$(sha256sum "$LAMBDA_DIR/package.json" "$LAMBDA_DIR/package-lock.json" | sha256sum | awk '{print $1}')
 else
-  NEW_HASH=$(sha256sum package.json | awk '{print $1}')
+  NEW_HASH=$(sha256sum "$LAMBDA_DIR/package.json" | awk '{print $1}')
 fi
 
 OLD_HASH=""
@@ -41,9 +41,9 @@ if [ "$NEW_HASH" != "$OLD_HASH" ]; then
   rm -rf "$CACHE_DIR"/*
   
   # Copiar archivos esenciales para instalar limpio sin afectar el entorno principal
-  cp package.json "$CACHE_DIR/"
-  if [ -f "package-lock.json" ]; then
-    cp package-lock.json "$CACHE_DIR/"
+  cp "$LAMBDA_DIR/package.json" "$CACHE_DIR/"
+  if [ -f "$LAMBDA_DIR/package-lock.json" ]; then
+    cp "$LAMBDA_DIR/package-lock.json" "$CACHE_DIR/"
   fi
   
   cd "$CACHE_DIR"
