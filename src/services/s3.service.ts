@@ -31,11 +31,13 @@ export async function descargarPDF(rfc: string, folio: string) {
             Key: objectKey,
             CopySource: `${bucketName}/${objectKey}`, // El origen es el mismo archivo
             MetadataDirective: "REPLACE",
+            ContentType: "application/pdf",
             Metadata: {
                 ...response.Metadata,
                 "nota-descargada": "true"
             }
         });
+        await s3Client.send(copyCommand);
 
         return Buffer.from(byteArray);
     } catch (error) {

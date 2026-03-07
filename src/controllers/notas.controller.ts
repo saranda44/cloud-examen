@@ -26,7 +26,7 @@ export async function descargarNota(req: Request, res: Response) {
 
         // decir al navegador que es un PDF y damos nombre del archivo
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename=${folio}.pdf`);
+        res.setHeader('Content-Disposition', `attachment; filename="Nota-${folio}.pdf"`);
 
         res.send(pdfBuffer);
     } catch (error) {
