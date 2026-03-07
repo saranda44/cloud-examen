@@ -2,7 +2,6 @@ import dotenv from "dotenv"
 dotenv.config();
 import express from "express"
 import routes from "./routes/routes"
-import { getDbPool } from "./database/connection";
 const app = express()
 const port = 8080
 
@@ -18,6 +17,3 @@ app.listen(port, () => {
   console.log(`Servidor corriendo en puerto ${port}`)
 })
 
-getDbPool().catch(err => {
-  console.error("Fallo la conexión a la base de datos al inicio:", err);
-});
