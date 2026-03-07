@@ -21,8 +21,9 @@ export async function createNota(req: Request, res: Response) {
 
 export async function descargarNota(req: Request, res: Response) {
     try {
-        const nota = await NotaService.findById(Number(req.params.id));
-        res.json(nota);
+        const nota = await NotaService.descargarPDF(String(req.params.rfc), String(req.params.folio));
+        res.contentType("application/pdf");
+        res.send(nota);
     } catch (error) {
         res.status(500).json({ message: "Error al descargar la nota" });
     }

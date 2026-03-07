@@ -1,7 +1,8 @@
 import { NotaDetalleModel } from "../models/nota.detalle.model";
 import { NotaModel } from "../models/nota.model";
 import { ProductoModel } from "../models/producto.model";
-import { noteCreated, subscribeClientEmail } from "./sns.service";
+import { noteCreated } from "./sns.service";
+import { descargarPDF as descargaPDFS3 } from "./s3.service";
 
 export const NotaService = {
     findById,
@@ -9,7 +10,6 @@ export const NotaService = {
     descargarPDF,
     enviarCorreo
 };
-
 
 //funcion para leer una nota por su id regresa un json
 //nota, detalle, cliente, domicilios y productos
@@ -53,20 +53,12 @@ async function createNota(nota: any, detalles: any[]) {
     // 3. Actualizar el total en la nota base
     await NotaModel.updateTotal(notaId, totalNota);
 
-    // 4. Enviar mensaje a SNS y suscribir al cliente al topico para enviar correo
-    // SNS
+    // 4. Enviar mensaje a SNS
     try {
         await noteCreated(notaId);
         console.log("Evento NOTA_CREATED enviado");
     } catch (error) {
         console.error("Error enviando evento SNS:", error);
-    }
-
-    try {
-        await subscribeClientEmail(nota.cliente.correo);
-        console.log("Cliente suscrito a SNS");
-    } catch (error) {
-        console.error("Error suscribiendo email:", error);
     }
 
     // 5. Regresar la nota completa
@@ -76,17 +68,9 @@ async function createNota(nota: any, detalles: any[]) {
 }
 
 // Método para endpoint de descarga
-async function descargarPDF(id: number) {
-    //obtener la nota
-
-    //obtener el nombre del bucket (o obtenerlo del url) y el nombre del objeto (ponerlo en la url?)
-
-    //obtener los metadatos del objeto
-
-    //crear nuevos metadatos con nota-descargada: true
-
-    //descargar el pdf y regresarlo (presigned url?)
-
+async function descargarPDF(rfc: string, folio: string) {
+    const pdfBuffer = await descargaPDFS3(rfc, folio);
+    return pdfBuffer;
 }
 
 // Método para endpoint de re-enviar

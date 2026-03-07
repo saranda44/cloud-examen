@@ -14,12 +14,3 @@ export async function noteCreated(notaId: number) {
     });
     return await snsClient.send(command);
 }
-
-export async function subscribeClientEmail(email: string) {
-    const command = new SubscribeCommand({
-        TopicArn: process.env.SNS_TOPIC_ARN_EMAIL,
-        Protocol: "email",
-        Endpoint: email
-    });
-    return await snsClient.send(command);
-}

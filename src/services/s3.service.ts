@@ -1,0 +1,46 @@
+import { S3Client, GetObjectCommand, CopyObjectCommand } from '@aws-sdk/client-s3';
+
+const s3Client = new S3Client({
+    region: 'us-east-1'
+})
+
+
+export async function descargarPDF(rfc: string, folio: string) {
+    //nombre de mi bucket 
+    const bucketName = `746458-esi3898k-examen1`;
+    //nombre del objeto a descargar
+    const objectKey = `${rfc}/${folio}.pdf`;
+    try {
+        //obtener objeto
+        const getCommand = new GetObjectCommand({
+            Bucket: bucketName,
+            Key: objectKey,
+        });
+
+        const response = await s3Client.send(getCommand);
+
+        // Para archivos binarios (PDF, Imágenes), transformamos a Uint8Array 
+        // y luego a Buffer para su manejo en Node.js
+        const byteArray = await response.Body?.transformToByteArray();
+
+        if (!byteArray) throw new Error("El cuerpo del objeto está vacío");
+
+        //modificar metadatos
+        const copyCommand = new CopyObjectCommand({
+            Bucket: bucketName,
+            Key: objectKey,
+            CopySource: `${bucketName}/${objectKey}`,
+            MetadataDirective: "REPLACE",
+            Metadata: {
+                ...response.Metadata, // Mantenemos los otros metadatos si existen
+                "nota-descargada": "true" // S3 guarda los valores de metadatos como strings
+            }
+        });
+
+        return Buffer.from(byteArray);
+    } catch (error) {
+        console.error("Error descargando el objeto:", error);
+        throw error;
+    }
+
+}
