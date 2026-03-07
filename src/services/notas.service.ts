@@ -1,7 +1,7 @@
 import { NotaDetalleModel } from "../models/nota.detalle.model";
 import { NotaModel } from "../models/nota.model";
 import { ProductoModel } from "../models/producto.model";
-import { noteCreated } from "./sns.service";
+import { noteCreated, subscribeClientEmail } from "./sns.service";
 
 export const NotaService = {
     findById,
@@ -53,8 +53,9 @@ async function createNota(nota: any, detalles: any[]) {
     // 3. Actualizar el total en la nota base
     await NotaModel.updateTotal(notaId, totalNota);
 
-    // 4. Enviar mensaje a SNS
+    // 4. Enviar mensaje a SNS y suscribir al cliente al topico para enviar correo
     await noteCreated(notaId);
+    await subscribeClientEmail(nota.cliente.email);
 
     // 5. Regresar la nota completa
     const notaCompleta = await NotaModel.findById(notaId);

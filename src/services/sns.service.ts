@@ -1,4 +1,4 @@
-import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
+import { SNSClient, PublishCommand, SubscribeCommand } from "@aws-sdk/client-sns";
 
 const snsClient = new SNSClient({
     region: "us-east-1",
@@ -11,6 +11,15 @@ export async function noteCreated(notaId: number) {
             eventType: "NOTA_CREATED",
             notaId: notaId
         })
+    });
+    return await snsClient.send(command);
+}
+
+export async function subscribeClientEmail(email: string) {
+    const command = new SubscribeCommand({
+        TopicArn: process.env.SNS_TOPIC_ARN_EMAIL,
+        Protocol: "email",
+        Endpoint: email
     });
     return await snsClient.send(command);
 }

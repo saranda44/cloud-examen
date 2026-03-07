@@ -98,8 +98,7 @@ export async function handler(event: SNSEvent) {
                 // Guardamos el ID de la base de datos para la URL de descarga
                 'nota-id': String(notaId || nota.id),
                 'rfc': cliente.rfc,
-                'folio': nota.folio,
-                'email': cliente.correo
+                'folio': nota.folio
             }
         });
 

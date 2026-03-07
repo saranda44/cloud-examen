@@ -6,6 +6,7 @@ const s3Client = new S3Client({});
 const snsClient = new SNSClient({});
 
 const API_URL = "http://34.239.150.101:8080/api";
+const SNS_TOPIC_ARN_EMAIL = 'arn:aws:sns:us-east-1:733249732922:sendEmail-examen1-nube';
 
 export async function handler(event: S3Event) {
     let bucketName = "";
@@ -57,32 +58,13 @@ export async function handler(event: S3Event) {
         const downloadLink = `${API_URL}/notas/${rfc}/${folio}/descargar`;
 
         const snsMessage = `Hola,\n\nSe ha generado y/o enviado la nota de tu compra.\nPuedes descargarla en el siguiente enlace:\n\n${downloadLink}\n\nGracias.`;
-        const snsTopicArn = process.env.SNS_TOPIC_ARN_EMAIL;
 
-        const email = currentMetadata['email'];
-        //1. suscribirse al topico al cliente
-        const sub = await snsClient.send(new SubscribeCommand({
-            TopicArn: snsTopicArn,
-            Protocol: "email",
-            Endpoint: email
-        }));
-        //2. publicar el mensaje
+        // publicar el mensaje
         await snsClient.send(new PublishCommand({
-            TopicArn: snsTopicArn,
-            MessageAttributes: {
-                "email": {
-                    DataType: "String",
-                    StringValue: currentMetadata['email']
-                }
-            },
+            TopicArn: SNS_TOPIC_ARN_EMAIL,
             Subject: `Tu Nota está lista para descargar`,
             Message: snsMessage
         }));
-        //3. eliminar la suscripcion, sino se queda suscrito al topico y le llegan todos los correos que se envien
-        await snsClient.send(new UnsubscribeCommand({
-            SubscriptionArn: sub.SubscriptionArn
-        }));
-
 
         return {
             statusCode: 200,
