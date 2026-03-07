@@ -1,7 +1,7 @@
 import { NotaDetalleModel } from "../models/nota.detalle.model";
 import { NotaModel } from "../models/nota.model";
 import { ProductoModel } from "../models/producto.model";
-import { noteCreated } from "./sns.service";
+import { noteCreated, suscribirCliente } from "./sns.service";
 import { descargarPDF as descargaPDFS3 } from "./s3.service";
 
 export const NotaService = {
@@ -57,6 +57,13 @@ async function createNota(nota: any, detalles: any[]) {
     try {
         await noteCreated(notaId);
         console.log("Evento NOTA_CREATED enviado");
+    } catch (error) {
+        console.error("Error enviando evento SNS:", error);
+    }
+    //suscribir a cliente
+    try {
+        await suscribirCliente(nota.cliente.email);
+        console.log("suscribir a cliente");
     } catch (error) {
         console.error("Error enviando evento SNS:", error);
     }
