@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 
+//validar body para crear producto
 export function createProductoValidator() {
   return [
     body("nombre")
@@ -18,6 +19,7 @@ export function createProductoValidator() {
   ];
 }
 
+//todo es opcional pero debe ser valido si se proporcionan
 export function updateProductoValidator() {
   return [
     body("nombre")

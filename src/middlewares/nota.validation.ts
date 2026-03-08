@@ -1,4 +1,6 @@
 import { body } from "express-validator";
+
+//validar que tenga cliente, direcciones, y arreglo de detalles
 export function createNotaValidator() {
   return [
     body("cliente_id")

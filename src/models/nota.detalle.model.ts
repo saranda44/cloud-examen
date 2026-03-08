@@ -13,6 +13,7 @@ export const NotaDetalleModel = {
   create
 };
 
+//query para crear lo detalles de una nota
 async function create(notaDetalle: NotaDetalle,) {
   const pool = await getDbPool();
   await pool.query(

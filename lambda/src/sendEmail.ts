@@ -1,5 +1,5 @@
 import { S3Client, HeadObjectCommand, CopyObjectCommand } from "@aws-sdk/client-s3";
-import { SNSClient, PublishCommand, SubscribeCommand, UnsubscribeCommand } from "@aws-sdk/client-sns";
+import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
 import { S3Event } from 'aws-lambda';
 
 const s3Client = new S3Client({});

@@ -1,5 +1,6 @@
 import { body, param } from "express-validator";
 
+//validaciones para crear y actualizar un domicilio 
 export function createDomicilioValidator() {
   return [
     body("domicilio")
@@ -28,6 +29,7 @@ export function createDomicilioValidator() {
   ];
 }
 
+//para actualizar es opcional todos los campos
 export function updateDomicilioValidator() {
   return [
     body("domicilio")

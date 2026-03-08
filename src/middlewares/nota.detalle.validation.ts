@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 
+//validar que detalle tenga producto_id y cantidad
 export function createDetalleNotaValidator() {
   return [
     body("detalles.*.producto_id")

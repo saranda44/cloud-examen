@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { DomiciliosService } from "../services/domicilio.service";
 import { ClienteService } from "../services/clientes.service";
 
+//obtener todos lo domicilios
 export async function getDomicilios(req: Request, res: Response) {
     try {
         const domicilios = await DomiciliosService.getAllDomicilios();
@@ -12,6 +13,7 @@ export async function getDomicilios(req: Request, res: Response) {
     }
 }
 
+//obtener un domicilio por su id
 export async function getDomicilioById(req: Request, res: Response) {
     try {
         const domicilio = await DomiciliosService.getDomicilioById(Number(req.params.id));
@@ -22,6 +24,7 @@ export async function getDomicilioById(req: Request, res: Response) {
     }
 }
 
+//obtener los domicilios de un cliente
 export async function getDomiciliosByCliente(req: Request, res: Response) {
     try {
         //primero verificamos que el cliente exista, si no existe, no tiene sentido buscar sus domicilios
@@ -39,6 +42,7 @@ export async function getDomiciliosByCliente(req: Request, res: Response) {
     }
 }
 
+//crear domicilio
 export async function createDomicilio(req: Request, res: Response) {
     try {
         //verificar que el cliente exista antes de crear un domicilio para ese cliente
@@ -54,6 +58,7 @@ export async function createDomicilio(req: Request, res: Response) {
     }
 }
 
+//actualizar domicilio
 export async function updateDomicilio(req: Request, res: Response) {
     try {
         const domicilio = await DomiciliosService.updateDomicilio(Number(req.params.id), req.body);
@@ -64,6 +69,7 @@ export async function updateDomicilio(req: Request, res: Response) {
     }
 }
 
+//eliminar domicilio
 export async function deleteDomicilio(req: Request, res: Response) {
     try {
         await DomiciliosService.deleteDomicilio(Number(req.params.id));

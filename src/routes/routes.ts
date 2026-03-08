@@ -13,6 +13,4 @@ router.use('/domicilios', domicilioRoutes);
 router.use('/productos', productosRoutes);
 router.use('/notas', notasRoutes);
 
-
-
 export default router;

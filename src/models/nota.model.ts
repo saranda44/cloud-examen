@@ -99,6 +99,8 @@ async function findById(id: number) {
   return result.rows[0];
 }
 
+//query para crear nota base
+//total inicial = 0
 async function create(nota: Nota) {
   const pool = await getDbPool();
   const result = await pool.query(
@@ -112,6 +114,7 @@ async function create(nota: Nota) {
   return result.rows[0];
 }
 
+//query para actalizar el total
 async function updateTotal(notaId: number, total: number) {
   const pool = await getDbPool();
   await pool.query(

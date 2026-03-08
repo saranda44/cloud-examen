@@ -1,10 +1,19 @@
 import { Router } from "express";
-import {deleteProducto, updateProducto, createProducto, getProductoById, getProductos } from "../controllers/productos.controller";
+import { deleteProducto, updateProducto, createProducto, getProductoById, getProductos } from "../controllers/productos.controller";
 import { validateRequest, idParamValidator } from "../middlewares/validation";
 import { createProductoValidator, updateProductoValidator } from "../middlewares/productos.validation";
 
+const router = Router({ mergeParams: true }); //heredamos los params de la ruta padre
 
-const router = Router({mergeParams: true}); //heredamos los params de la ruta padre
+/**body ejemplo
+ * {
+  "nombre": "PantallaLED",
+  "unidad_medida": "pieza",
+  "precio_base": "0"
+}
+ */
+
+
 
 router.get('/', getProductos);
 router.get('/:id', idParamValidator(), validateRequest, getProductoById);

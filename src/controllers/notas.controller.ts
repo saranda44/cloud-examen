@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { NotaService } from "../services/notas.service";
 
+//leer nota (JSON, no modifica metadatos)
 export async function getNotaById(req: Request, res: Response) {
     try {
         const nota = await NotaService.findById(Number(req.params.id));
@@ -10,6 +11,7 @@ export async function getNotaById(req: Request, res: Response) {
     }
 }
 
+//Crear nota (nota, domicilios, cliente, detalles)
 export async function createNota(req: Request, res: Response) {
     try {
         const nota = await NotaService.createNota(req.body, req.body.detalles);
@@ -19,6 +21,7 @@ export async function createNota(req: Request, res: Response) {
     }
 }
 
+//descargar nota (manda directamente a guardar el archivo pdf)
 export async function descargarNota(req: Request, res: Response) {
     try {
         const { rfc, folio } = req.params;

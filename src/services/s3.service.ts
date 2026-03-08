@@ -4,7 +4,7 @@ const s3Client = new S3Client({
     region: 'us-east-1'
 })
 
-
+//funcion para descargar pdf -> devuelve Buffer
 export async function descargarPDF(rfc: string, folio: string) {
     //nombre de mi bucket 
     const bucketName = `746458-esi3898k-examen1`;

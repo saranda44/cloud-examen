@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ClienteService } from "../services/clientes.service";
 
+//obtener todos lo clientes
 export async function getClientes(req: Request, res: Response) {
     try {
         const clientes = await ClienteService.getAllClientes();
@@ -10,6 +11,7 @@ export async function getClientes(req: Request, res: Response) {
     }
 }
 
+//obtener un cliente por su id
 export async function getClienteById(req: Request, res: Response) {
     try {
         const cliente = await ClienteService.getClienteById(Number(req.params.id));
@@ -22,6 +24,7 @@ export async function getClienteById(req: Request, res: Response) {
     }
 }
 
+//crear cliente
 export async function createCliente(req: Request, res: Response) {
     try {
         const cliente = await ClienteService.createCliente(req.body);
@@ -31,6 +34,7 @@ export async function createCliente(req: Request, res: Response) {
     }
 }
 
+//actualizar cliente
 export async function updateCliente(req: Request, res: Response) {
     try {
         const cliente = await ClienteService.updateCliente(Number(req.params.id), req.body);
@@ -40,6 +44,7 @@ export async function updateCliente(req: Request, res: Response) {
     }
 }
 
+//eliminar cliente
 export async function deleteCliente(req: Request, res: Response) {
     try {
         await ClienteService.deleteCliente(Number(req.params.id));

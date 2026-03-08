@@ -95,14 +95,14 @@ export async function handler(event: SNSEvent) {
                 'hora-envio': new Date().toISOString(),
                 'nota-descargada': 'false',
                 'veces-enviado': '1',
-                // Guardamos el ID de la base de datos para la URL de descarga
+                // Guardamos id, rfc y folio para la URL de descarga
                 'nota-id': String(notaId || nota.id),
                 'rfc': cliente.rfc,
                 'folio': nota.folio
             }
         });
 
-        await s3Client.send(putCommand);
+        await s3Client.send(putCommand); //guardar objeto en s3
 
         return {
             statusCode: 200,
