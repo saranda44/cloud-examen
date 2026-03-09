@@ -39,7 +39,7 @@ aws lambda create-function \
   --role $LAB_ROLE_ARN \
   --handler sendEmail.handler \
   --zip-file fileb://lambda/build/sendEmail.zip \
-  --environment Variables={API_URL=http://$EC2IP/api, SNS_TOPIC_ARN_EMAIL=$TOPIC_ARN_EMAIL}
+  --environment Variables={API_URL=http://$EC2IP:8080/api, SNS_TOPIC_ARN_EMAIL=$TOPIC_ARN_EMAIL}
 
 
 echo "Dar permiso a S3 para activar lambda 2"
@@ -86,10 +86,9 @@ echo "4. Actualizar lambda 2"
 echo "aws lambda update-function-code \
     --function-name sendEmail \
     --zip-file fileb://lambda/build/sendEmail.zip"
+echo "5. Actualizar variables"
+echo "aws lambda update-function-configuration \
+    --function-name sendEmail \
+    --environment \"Variables={API_URL=http://$EC2IP:8080/api,SNS_TOPIC_ARN_EMAIL=$TOPIC_ARN_EMAIL}\""
 echo "----------------------------------------"
 
-
-# actualizar variables
-# aws lambda update-function-configuration \
-#   --function-name sendEmail \
-#   --environment "Variables={API_URL=http://$EC2IP/api,SNS_TOPIC_ARN_EMAIL=$TOPIC_ARN_EMAIL}"
