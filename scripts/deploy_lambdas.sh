@@ -38,7 +38,8 @@ aws lambda create-function \
   --runtime nodejs20.x \
   --role $LAB_ROLE_ARN \
   --handler sendEmail.handler \
-  --zip-file fileb://lambda/build/sendEmail.zip
+  --zip-file fileb://lambda/build/sendEmail.zip \
+  --environment Variables={API_URL=http://$EC2IP/api, SNS_TOPIC_ARN_EMAIL=$TOPIC_ARN_EMAIL}
 
 
 echo "Dar permiso a S3 para activar lambda 2"
@@ -86,3 +87,9 @@ echo "aws lambda update-function-code \
     --function-name sendEmail \
     --zip-file fileb://lambda/build/sendEmail.zip"
 echo "----------------------------------------"
+
+
+# actualizar variables
+# aws lambda update-function-configuration \
+#   --function-name sendEmail \
+#   --environment "Variables={API_URL=http://$EC2IP/api,SNS_TOPIC_ARN_EMAIL=$TOPIC_ARN_EMAIL}"

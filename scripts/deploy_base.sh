@@ -80,6 +80,11 @@ aws rds create-db-instance \
   --no-publicly-accessible \
   --region us-east-1
 
+echo "ESPERAR A QUE RDS ESTE DISPONIBLE"
+aws rds wait db-instance-available \
+  --db-instance-identifier examen1-nube-db \
+  --region us-east-1
+
 echo "GUARDAR ENDPOINT DE RDS"
 RDSHOST=$(aws rds describe-db-instances \
   --db-instance-identifier examen1-nube-db \
@@ -104,6 +109,10 @@ aws ec2 run-instances \
   --security-group-ids $SGEC2 \
   --iam-instance-profile Name=LabInstanceProfile \
   --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=examen1-nube}]"
+
+echo "ESPERAR A QUE EC2 ESTE CORRIENDO"
+aws ec2 wait instance-running \
+  --filters "Name=tag:Name,Values=examen1-nube"
 
 EC2IP=$(aws ec2 describe-instances \
   --filters "Name=tag:Name,Values=examen1-nube" \

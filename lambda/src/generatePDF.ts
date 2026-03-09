@@ -3,7 +3,6 @@ import { SNSEvent } from 'aws-lambda';
 
 import PDFDocument from "pdfkit";
 
-const API_URL = "http://98.93.37.76:8080/api";
 const expediente = "746458";
 
 // Cliente de S3 (toma las credenciales del entorno de ejecución Lambda o variables de entorno locales)
@@ -11,21 +10,11 @@ const s3Client = new S3Client({});
 
 export async function handler(event: SNSEvent) {
     try {
-        // 1. Obtener ID de la nota desde el evento SNS
+        // 1. Obtener todos los datos necesarios de la nota desde el evento SNS
         const message = JSON.parse(event.Records[0].Sns.Message);
-        const notaId = message.notaId;
-
-        //hacer la peticion a la API
-        const response = await fetch(`${API_URL}/notas/${notaId}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        //guardar lo que regresa la API
-        const data = await response.json();
-        const nota = data;
-        const cliente = data.cliente;
-        const detalles = data.detalle;
+        const nota = message;
+        const cliente = nota.cliente;
+        const detalles = nota.detalle;
 
         // 2. Crear PDF
         //crear el buffer
@@ -96,7 +85,7 @@ export async function handler(event: SNSEvent) {
                 'nota-descargada': 'false',
                 'veces-enviado': '1',
                 // Guardamos id, rfc y folio para la URL de descarga
-                'nota-id': String(notaId || nota.id),
+                'nota-id': String(nota.id),
                 'rfc': cliente.rfc,
                 'folio': nota.folio
             }

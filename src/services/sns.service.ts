@@ -15,3 +15,21 @@ export async function noteCreated(notaId: number) {
     });
     return await snsClient.send(command);
 }
+
+//funcion para subscribscribir cliente a correo
+//debe susbscribscirbirse antes de poderle enviar correo
+//se llamara al crear al cliente
+export async function subscribeClientToEmail(email: string) {
+    const command = new SubscribeCommand({
+        TopicArn: process.env.SNS_TOPIC_ARN_EMAIL,
+        Protocol: "email",
+        Endpoint: email
+    });
+    try {
+        const result = await snsClient.send(command);
+        return result;
+    } catch (error) {
+        console.error("Error suscribiendo cliente al correo:", error);
+        return null;
+    }
+}

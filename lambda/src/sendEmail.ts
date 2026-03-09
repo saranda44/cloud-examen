@@ -5,8 +5,8 @@ import { S3Event } from 'aws-lambda';
 const s3Client = new S3Client({});
 const snsClient = new SNSClient({});
 
-const API_URL = "http://98.93.37.76:8080/api";
-const SNS_TOPIC_ARN_EMAIL = 'arn:aws:sns:us-east-1:733249732922:sendEmail-examen1-nube';
+const API_URL = process.env.API_URL;
+const SNS_TOPIC_ARN_EMAIL = process.env.SNS_TOPIC_ARN_EMAIL;
 
 export async function handler(event: S3Event) {
     let bucketName = "";
