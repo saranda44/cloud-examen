@@ -5,12 +5,12 @@ const snsClient = new SNSClient({
 });
 
 //funcion para crear nota y enviarla a lambda 1
-export async function noteCreated(notaId: number) {
+export async function noteCreated(nota: any) {
     const command = new PublishCommand({
         TopicArn: process.env.SNS_TOPIC_ARN_NOTIFICATION,
         Message: JSON.stringify({
             eventType: "NOTA_CREATED",
-            notaId: notaId
+            nota: nota
         })
     });
     return await snsClient.send(command);

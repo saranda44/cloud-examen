@@ -131,6 +131,15 @@ TOPIC_ARN_NOTIFICATION=$(aws sns create-topic \
   --name noteCreated-examen1-nube \
   --query TopicArn --output text)
 
+##obtener ARN de SNS
+TOPIC_ARN_EMAIL=$(aws sns list-topics \
+  --query "Topics[?contains(TopicArn,'sendEmail-examen1-nube')].TopicArn" \
+  --output text)
+
+TOPIC_ARN_NOTIFICATION=$(aws sns list-topics \
+  --query "Topics[?contains(TopicArn,'noteCreated-examen1-nube')].TopicArn" \
+  --output text)
+
 
 echo "------------------------"
 echo "CREA TUS FUNCIONES LAMBDA"

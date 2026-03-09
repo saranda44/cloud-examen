@@ -52,9 +52,10 @@ async function createNota(nota: any, detalles: any[]) {
     // 3. Actualizar el total en la nota base
     await NotaModel.updateTotal(notaId, totalNota);
 
-    // 4. Enviar mensaje a SNS
+    // 4. Enviar mensaje a SNS con toda la nota
     try {
-        await noteCreated(notaId);
+        const notaCompleta = await NotaModel.findById(notaId);
+        await noteCreated(notaCompleta);
         console.log("Evento NOTA_CREATED enviado");
     } catch (error) {
         console.error("Error enviando evento SNS:", error);
